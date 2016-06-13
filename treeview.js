@@ -73,6 +73,23 @@ var ATREEVIEW = function (options) {
         tree.refreshView();
     }
 
+
+    var callbacks = [];
+    tree.on = function(callback){
+        callbacks.push(callback);
+    }
+    function executeCallback(eventName){
+        var args = Array.prototype.slice.call(arguments);
+        args.shift();
+        callbacks.forEach(function(userCallbacks){
+            Object.keys(userCallbacks).forEach(function(callBack){
+                if(callBack == eventName){
+                    userCallbacks[callBack].apply(this,args);
+                }
+            })
+        })
+    }
+
     function addNode(nodeName) {
         var node = generateNode(nodeName);
         buildNode(context[nodeName], node, nodeName);
@@ -141,10 +158,11 @@ var ATREEVIEW = function (options) {
                         thisnode.prepend(simpleNode);
                         node.append(thisnode);
                         try {
-                            tree.newNodeGeneratedCallback(simpleNode, simpleNode.data());
-                        } catch (error) {
+//                            tree.newNodeGeneratedCallback(simpleNode, simpleNode.data());
+                            executeCallback('newNode',simpleNode, simpleNode.data())
+                       } catch (error) {
 
-                        }
+                       }
                     }
                 }
             }
