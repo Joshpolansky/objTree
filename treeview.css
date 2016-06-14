@@ -1,21 +1,13 @@
-#varWatch{
-	/*overflow-y: auto;*/
-}
-
-
 .treeview{
-	height: 300px;
-}
-
-.treeview-root:focus{
-	/*outline: 0;*/
+	height: inherit;
 }
 
 .treeview-container{
 	height: calc(100% - 20px);
     border: thin lightgray;
     border-style: solid;
-    overflow: scroll;
+    overflow-y: scroll;
+	overflow-x: auto;
     width:100%;
 }
 
@@ -36,6 +28,7 @@
 }
 .treeview-value{
     float: right;
+	padding: 4px;
 	padding-left: 2px;
     min-width: 50px;
 	min-height: 18px;
@@ -43,7 +36,7 @@
 }
 
 .treeview-content{
-	margin: 2px;
+	padding: 4px;
     display: flex;
 }
 
@@ -56,11 +49,11 @@
 	margin-right: 0px;
 }
 
-.treeview-node .treeview-selected, 
+.treeview-node .treeview-selected,
 .treeview-container .treeview-selected{
 	background-color: rgba(255, 165, 0, 0.18);
 }
-.treeview-node .treeview-active, 
+.treeview-node .treeview-active,
 .treeview-container .treeview-active{
 	background-color: rgba(255, 165, 0, 0.38);
 }

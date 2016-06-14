@@ -32,6 +32,7 @@ var ATREEVIEW = function (options) {
             divs[0].textContent = ColumnName[1];
             divs[1].textContent = ColumnName[0];
         }
+        return tree;
     }
 
     tree.refreshView = function () {
@@ -52,7 +53,7 @@ var ATREEVIEW = function (options) {
         var valueContainer = Root.find('.treeview-container');
 
         if(nodeNames.length==0){
-            buildNode(context,valueContainer,'name');
+            buildNode(context,valueContainer,contextName);
         }
 
         nodeNames.forEach(function (element) {
@@ -64,13 +65,18 @@ var ATREEVIEW = function (options) {
     tree.newNode = function (nodeName) {
         nodeNames.push(nodeName);
         tree.refreshView();
+        return tree;
     }
 
-    tree.setContext = function (data) {
+    tree.setContext = function (data, initData) {
 
         contextName = data;
         context = getDeepValue(window, data);
-        tree.refreshView();
+        if(typeof initData == 'undefined' || initData)
+        {
+            tree.refreshView();
+        }
+        return tree;
     }
 
 
@@ -157,12 +163,14 @@ var ATREEVIEW = function (options) {
 
                         thisnode.prepend(simpleNode);
                         node.append(thisnode);
-                        try {
-//                            tree.newNodeGeneratedCallback(simpleNode, simpleNode.data());
+                        // try{
+                        //     simpleNode.data()
+                        // }catch(e){
+                        //     console.log(e);
+                        // }
+                        if(simpleNode){
                             executeCallback('newNode',simpleNode, simpleNode.data())
-                       } catch (error) {
-
-                       }
+                        }
                     }
                 }
             }
@@ -235,7 +243,7 @@ var ATREEVIEW = function (options) {
             active.addClass("treeview-active");
             active.parent().addClass("treeview-active-node");
             active.siblings(".treeview-content, .treeview-value").addClass("treeview-active");
-            var scroller = $('.treeview-container');
+            var scroller = treeview.find('.treeview-container');
             var scroll = scroller.scrollTop();
             var position = active.position().top;
             if(position < 20){
@@ -312,7 +320,7 @@ var ATREEVIEW = function (options) {
                 if ($previousInLevel.hasClass('treeview-content')) {
                     return $previousInLevel;
                 }
-                else if ($previousInLevel.hasClass("treeview-node") 
+                else if ($previousInLevel.hasClass("treeview-node")
                 && !$previousInLevel.hasClass("treeview-colapse-children")) {
 
                     return getLastShowingFromNode($previousInLevel);
@@ -332,7 +340,7 @@ var ATREEVIEW = function (options) {
             return null;
         }
 
-    }    
+    }
     function getNextParent(activeObject) {
         if (activeObject.parent().next().length > 0) {
             var NextParent = getSelectable(activeObject.parent().next());
@@ -541,7 +549,7 @@ var ATREEVIEW = function (options) {
                     $(this).removeClass("treeview-editing")
                     $(this).removeClass("editing")
                     var myData = $(this).data();
-                    tree.ValueChangedCallback($(this), myData, $(this).html());
+                    executeCallback('valueChanged',$(this), myData, $(this).html());
                     return
                 }
                 else {
