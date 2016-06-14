@@ -163,11 +163,6 @@ var ATREEVIEW = function (options) {
 
                         thisnode.prepend(simpleNode);
                         node.append(thisnode);
-                        // try{
-                        //     simpleNode.data()
-                        // }catch(e){
-                        //     console.log(e);
-                        // }
                         if(simpleNode){
                             executeCallback('newNode',simpleNode, simpleNode.data())
                         }
@@ -540,8 +535,6 @@ var ATREEVIEW = function (options) {
 
             if (tree.readOnly) return;
             var c = String.fromCharCode(event.which);
-            console.log(c);
-            console.log(event.which);
             var selectedObjects = treeview.find(".treeview-value.treeview-selected");
 
             selectedObjects.each(function () {
